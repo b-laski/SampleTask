@@ -9,6 +9,7 @@
 import Dip
 
 class DIContainter {
+    
     static var container = DependencyContainer { container in
         registerDefinitions(on: container)
     }

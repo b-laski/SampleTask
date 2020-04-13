@@ -20,7 +20,6 @@ class ChartXAxisFormatter: NSObject {
     }
 }
 
-
 extension ChartXAxisFormatter: IAxisValueFormatter {
 
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {

@@ -25,9 +25,9 @@ struct CurrencyRequest: HTTPHandlerRequestProtocol {
     
     var parameters: Encodable?
     
-    var queryParameters: [String : String]?
+    var queryParameters: [String: String]?
     
-    var headers: [String : String] {
+    var headers: [String: String] {
         return defaultHeader()
     }
     

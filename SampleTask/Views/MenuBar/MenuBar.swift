@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol MenuBarDelegate: NSObject {
+protocol MenuBarDelegate: class {
     func cellDidSelect(tabelName: String)
 }
 

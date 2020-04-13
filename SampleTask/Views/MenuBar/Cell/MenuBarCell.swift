@@ -24,7 +24,7 @@ class MenuBarCell: UICollectionViewCell {
         return view
     }()
     
-    // MARK: -  Public variables -
+    // MARK: - Public variables -
     static var identifier: String {
         return String(describing: self)
     }
@@ -53,8 +53,7 @@ class MenuBarCell: UICollectionViewCell {
         textLabel.text = ""
         underLineView.isHidden = true
     }
-    
-    
+
     // MARK: - Private methods -
     private func doLayout() {
         addSubview(textLabel)

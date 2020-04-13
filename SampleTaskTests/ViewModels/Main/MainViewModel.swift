@@ -57,7 +57,6 @@ extension MainViewModelSpec {
     }
 }
 
-
 class MainViewModelSpec: QuickSpec {
     override func spec() {
         describe("MainViewModelSpec") {
@@ -72,8 +71,7 @@ class MainViewModelSpec: QuickSpec {
                 
                 DIContainter.container.register { httpHandler as HTTPHandlerProtocol }
                 sut = MainViewModel(delegate: delegate)
-                
-                
+                                
             }
             
             describe("Should reload data after load data from api.") {

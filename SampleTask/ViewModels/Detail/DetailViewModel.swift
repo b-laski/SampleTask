@@ -27,7 +27,10 @@ class DetailViewModel {
     
     // MARK: - Public methods -
     func fetchCurrencyData(tableType: String, code: String, startDate: String, endDate: String) {
-        currencyService.fetchCurrency(tableType: tableType, code: code, startDate: startDate, endDate: endDate) { [weak self] (result: Result<Table, CurrencyServiceError>) in
+        currencyService.fetchCurrency(tableType: tableType,
+                                      code: code,
+                                      startDate: startDate,
+                                      endDate: endDate) { [weak self] (result: Result<Table, CurrencyServiceError>) in
             guard let strongSelf = self else { return }
             switch result {
             case .failure(let error):

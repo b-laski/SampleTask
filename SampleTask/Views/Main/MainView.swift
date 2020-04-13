@@ -22,9 +22,9 @@ class MainView: UIView {
     
     let collectionView: UICollectionView = {
         let flow = UICollectionViewFlowLayout()
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: flow)
-        cv.backgroundColor = .systemBackground
-        return cv
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flow)
+        collectionView.backgroundColor = .systemBackground
+        return collectionView
     }()
     
     private var segmentItems = [MenuBarViewItemAttribute(color: .systemBackground, text: "A"),

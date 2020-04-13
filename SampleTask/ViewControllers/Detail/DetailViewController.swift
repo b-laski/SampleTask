@@ -66,7 +66,6 @@ class DetailViewController: UIViewController {
         let xAxis = detailView.chartView.xAxis
         xAxis.valueFormatter = xValuesNumberFormatter
 
-        
         let yVal = detailViewModel.currencyDate?.rates.map({ item -> ChartDataEntry in
             var xValue = 0.0
             if let timeInterval = item.effectiveDate?.toDate()?.timeIntervalSince1970 {
