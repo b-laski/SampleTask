@@ -44,15 +44,10 @@ class DetailViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        guard let code = currency.code else { return }
         title = currency.currency
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshButtonTapped(_:)))
         
-        showSpinner(onView: detailView)
-        
-        startDate = detailView.startDateInputForm.dateTextField.text ?? ""
-        endDate = detailView.endDateInputForm.dateTextField.text ?? ""
-        detailViewModel.fetchCurrencyData(tableType: tableType, code: code, startDate: startDate, endDate: endDate)
-        
+        refreshData()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -94,21 +89,34 @@ class DetailViewController: UIViewController {
         detailView.chartView.animate(xAxisDuration: 0.2)
     }
     
+    private func refreshData() {
+        guard let code = currency.code else { return }
+        
+        showSpinner(onView: detailView)
+        
+        startDate = detailView.startDateInputForm.dateTextField.text ?? ""
+        endDate = detailView.endDateInputForm.dateTextField.text ?? ""
+        detailViewModel.fetchCurrencyData(tableType: tableType, code: code, startDate: startDate, endDate: endDate)
+    }
+    
+    // MARK: - Actions -
+    @objc private func refreshButtonTapped(_ sender: UIBarButtonItem) {
+        refreshData()
+    }
+    
 }
 
 // MARK: - Extension QDateTextFieldDelegate -
 extension DetailViewController: QDateTextFieldDelegate {
     
     func valueChanged(_ sender: UITextField) {
-        guard let code = currency.code else { return }
-        showSpinner(onView: detailView)
         if sender.tag == 0 {
             startDate = sender.text ?? ""
         } else {
             endDate = sender.text ?? ""
         }
         
-        detailViewModel.fetchCurrencyData(tableType: tableType, code: code, startDate: startDate, endDate: endDate)
+        refreshData()
     }
 }
 
