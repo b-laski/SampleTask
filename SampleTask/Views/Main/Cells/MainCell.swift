@@ -29,14 +29,13 @@ class MainCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: -Lifecycle methods-
+    // MARK: - Lifecycle methods -
     override func prepareForReuse() {
         super.prepareForReuse()
         currencyNameLabel.text = ""
         dateLabel.text = ""
         averagePriceLabel.text = ""
     }
-    
     
     // MARK: - Private methods-
     func doLayout() {

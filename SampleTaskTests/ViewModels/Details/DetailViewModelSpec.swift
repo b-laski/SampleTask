@@ -30,7 +30,7 @@ extension DetailViewModelSpec {
     class MockedHTTPHandler: HTTPHandlerProtocol {
         var shouldReturnSuccess = false
         
-        func make<T>(request: HTTPHandlerRequestProtocol, completion: @escaping (Result<T, Error>) -> Void) where T : Decodable, T : Encodable {
+        func make<T: Codable>(request: HTTPHandlerRequestProtocol, completion: @escaping (Result<T, Error>) -> Void) {
             let responseModel = Table(table: "A",
                                       no: "NO/123/123",
                                       tradingDate: "2020-03-20",

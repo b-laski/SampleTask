@@ -17,9 +17,10 @@ class HttpHandler: HTTPHandlerProtocol {
     
     private let urlSession: URLSession
     private let completionQueue: DispatchQueue
-    var currentTask: URLSessionDataTask? = nil
+    var currentTask: URLSessionDataTask?
     
-    init(urlSession: URLSession = URLSession(configuration: .default), completionQueue: DispatchQueue = DispatchQueue.main) {
+    init(urlSession: URLSession = URLSession(configuration: .default),
+         completionQueue: DispatchQueue = DispatchQueue.main) {
         self.urlSession = urlSession
         self.completionQueue = completionQueue
     }
@@ -50,7 +51,8 @@ class HttpHandler: HTTPHandlerProtocol {
         var urlComponent = URLComponents(string: endpoint)
         
         if let queryParameters = request.queryParameters {
-            let queryItems = queryParameters.map{ URLQueryItem(name: $0.key, value: $0.value) }
+            let queryItems = queryParameters.map {
+                URLQueryItem(name: $0.key, value: $0.value) }
             
             urlComponent?.queryItems = queryItems
         }
@@ -59,14 +61,17 @@ class HttpHandler: HTTPHandlerProtocol {
     }
     
     private func prepareRequest(_ finalUrl: URL, request: HTTPHandlerRequestProtocol) -> URLRequest? {
-        var urlRequest = URLRequest(url: finalUrl, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 60)
+        var urlRequest = URLRequest(url: finalUrl,
+                                    cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+                                    timeoutInterval: 60)
         urlRequest.httpMethod = request.method.rawValue
         request.headers.forEach { urlRequest.addValue($0.value, forHTTPHeaderField: $0.key) }
         
         return urlRequest
     }
     
-    private func runRequest<T: Codable>(request: HTTPHandlerRequestProtocol, completion: @escaping (T?, Error?) -> Void) {
+    private func runRequest<T: Codable>(request: HTTPHandlerRequestProtocol,
+                                        completion: @escaping (T?, Error?) -> Void) {
         guard let finalUrl = prepareUrl(request: request) else {
             completion(nil, HTTPHandlerError.incorectUrl)
             return
@@ -92,7 +97,6 @@ class HttpHandler: HTTPHandlerProtocol {
                     break
                 }
             }
-            
             
             if let data = data {
                 let jsonDecoder = JSONDecoder()

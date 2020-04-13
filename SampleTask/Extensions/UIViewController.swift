@@ -8,7 +8,7 @@
 
 import UIKit
 
-fileprivate var vSpinner : UIView?
+private var vSpinner: UIView?
 
 extension UIViewController: ViewModelDelegate {
     func showMessage(title: String, body: String) {
@@ -17,15 +17,15 @@ extension UIViewController: ViewModelDelegate {
         present(alert, animated: true)
     }
     
-    func showSpinner(onView : UIView) {
+    func showSpinner(onView: UIView) {
         let spinnerView = UIView.init(frame: onView.bounds)
         spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-        let ai = UIActivityIndicatorView.init(style: .medium)
-        ai.startAnimating()
-        ai.center = spinnerView.center
+        let activityIndicator = UIActivityIndicatorView.init(style: .medium)
+        activityIndicator.startAnimating()
+        activityIndicator.center = spinnerView.center
         
         DispatchQueue.main.async {
-            spinnerView.addSubview(ai)
+            spinnerView.addSubview(activityIndicator)
             onView.addSubview(spinnerView)
         }
         

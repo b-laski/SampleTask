@@ -4,6 +4,7 @@ target 'SampleTask' do
   use_frameworks!
   pod 'Charts'
   pod "Dip"
+  pod 'SwiftLint'
 
   target 'SampleTaskTests' do
     inherit! :search_paths
