@@ -1,0 +1,30 @@
+PODS:
+  - Charts (3.4.0):
+    - Charts/Core (= 3.4.0)
+  - Charts/Core (3.4.0)
+  - Dip (7.1.1)
+  - Nimble (8.0.7)
+  - Quick (2.2.0)
+
+DEPENDENCIES:
+  - Charts
+  - Dip
+  - Nimble
+  - Quick
+
+SPEC REPOS:
+  https://cdn.cocoapods.org/:
+    - Charts
+    - Dip
+    - Nimble
+    - Quick
+
+SPEC CHECKSUMS:
+  Charts: 74c9f256eaf0460c0c416522d1cf8c634ea6b286
+  Dip: 6bebb09d50f88633039ce2c9fe5bc56d387b492f
+  Nimble: a73af6ecd4c9106f434f3d55fc54570be3739e0b
+  Quick: 7fb19e13be07b5dfb3b90d4f9824c855a11af40e
+
+PODFILE CHECKSUM: 788073de46071a215ad95528566b4b4c4983a940
+
+COCOAPODS: 1.9.1
