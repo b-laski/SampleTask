@@ -4,7 +4,7 @@
 //
 //  Created by Bartłomiej Łaski on 13/04/2020.
 //  Copyright © 2020 Bartłomiej Łaski. All rights reserved.
-//  swiftlint:disable force_cast
+//  swiftlint:disable force_cast function_body_length
 
 import Quick
 import Nimble
@@ -14,7 +14,7 @@ import Swinject
 import SampleTask
 
 extension MainViewModelSpec {
-    class MockingMainViewModelDelegate: MainViewModelDelegate {
+    class MockedMainViewModelDelegate: MainViewModelDelegate {
         
         var reloadedData = false
         func reloadData() {
@@ -63,14 +63,14 @@ class MainViewModelSpec: QuickSpec {
             var container: Container!
             
             var viewModel: MainViewModel!
-            var delegate: MockingMainViewModelDelegate!
+            var delegate: MockedMainViewModelDelegate!
             var httpHandler: MockedHTTPHandler!
             
             beforeEach {
                 container = Container()
                 
                 container.register(HTTPHandlerProtocol.self) { _ in MockedHTTPHandler() }.inObjectScope(.container)
-                container.register(MainViewModelDelegate.self) { _ in MockingMainViewModelDelegate() }.inObjectScope(.container)
+                container.register(MainViewModelDelegate.self) { _ in MockedMainViewModelDelegate() }.inObjectScope(.container)
                 container.register(TableRequestServiceProtocol.self) { resolver in
                     return TableRequestService(httpHandler: resolver.resolve(HTTPHandlerProtocol.self)!)
                 }
@@ -84,7 +84,7 @@ class MainViewModelSpec: QuickSpec {
                 }
                 
                 httpHandler = (container.resolve(HTTPHandlerProtocol.self) as! MockedHTTPHandler)
-                delegate = (container.resolve(MainViewModelDelegate.self) as! MockingMainViewModelDelegate)
+                delegate = (container.resolve(MainViewModelDelegate.self) as! MockedMainViewModelDelegate)
                 viewModel = (container.resolve(MainViewModel.self))!
                 
             }
