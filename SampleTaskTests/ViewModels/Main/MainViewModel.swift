@@ -4,11 +4,11 @@
 //
 //  Created by Bartłomiej Łaski on 13/04/2020.
 //  Copyright © 2020 Bartłomiej Łaski. All rights reserved.
-//
+//  swiftlint:disable force_cast
 
-import Foundation
 import Quick
 import Nimble
+import Swinject
 
 @testable
 import SampleTask
@@ -60,47 +60,62 @@ extension MainViewModelSpec {
 class MainViewModelSpec: QuickSpec {
     override func spec() {
         describe("MainViewModelSpec") {
+            var container: Container!
             
-            var sut: MainViewModel!
-            var httpHandler: MockingHTTPHandler!
+            var viewModel: MainViewModel!
             var delegate: MockingMainViewModelDelegate!
+            var httpHandler: MockingHTTPHandler!
             
             beforeEach {
-                httpHandler = MockingHTTPHandler()
-                delegate = MockingMainViewModelDelegate()
+                container = Container()
                 
-                DIContainter.container.register { httpHandler as HTTPHandlerProtocol }
-                sut = MainViewModel(delegate: delegate)
-                                
+                container.register(HTTPHandlerProtocol.self) { _ in MockingHTTPHandler() }.inObjectScope(.container)
+                container.register(MainViewModelDelegate.self) { _ in MockingMainViewModelDelegate() }.inObjectScope(.container)
+                container.register(TableRequestServiceProtocol.self) { resolver in
+                    return TableRequestService(httpHandler: resolver.resolve(HTTPHandlerProtocol.self)!)
+                }
+                
+                container.register(MainViewModel.self) { resolver in
+                    let service = resolver.resolve(TableRequestServiceProtocol.self)!
+                    let delegate = resolver.resolve(MainViewModelDelegate.self)!
+                    let mainViewModel = MainViewModel(delegate: delegate)
+                    mainViewModel.tableRequestManager = service
+                    return mainViewModel
+                }
+                
+                httpHandler = (container.resolve(HTTPHandlerProtocol.self) as! MockingHTTPHandler)
+                delegate = (container.resolve(MainViewModelDelegate.self) as! MockingMainViewModelDelegate)
+                viewModel = (container.resolve(MainViewModel.self))!
+                
             }
             
             describe("Should reload data after load data from api.") {
                 beforeEach {
                     httpHandler.shouldReturnSuccess = true
-                    sut.fetchSelectedTable(tableName: "A")
+                    viewModel.fetchSelectedTable(tableName: "A")
                 }
                 
                 it("Should reload data") {
                     expect(delegate.reloadedData).to(beTrue())
                 }
             }
-            
+//
             describe("Should show message") {
                 beforeEach {
                     httpHandler.shouldReturnSuccess = false
-                    sut.fetchSelectedTable(tableName: "A")
+                    viewModel.fetchSelectedTable(tableName: "A")
                 }
-                
+
                 it("Should reload data") {
                     expect(delegate.messageSent).to(beTrue())
                 }
             }
-            
+
             describe("Should clear data and cast reloadData") {
                 beforeEach {
-                    
+
                     delegate.reloadedData = false
-                    sut.tableData = Table(table: "A",
+                    viewModel.tableData = Table(table: "A",
                                           no: "NO/123/123",
                                           tradingDate: "2020-03-20",
                                           effectiveDate: "2020-03-20",
@@ -112,11 +127,11 @@ class MainViewModelSpec: QuickSpec {
                                                            bid: nil,
                                                            ask: nil,
                                                            mid: 3.987)])
-                    sut.clearTableData()
+                    viewModel.clearTableData()
                 }
-                
+
                 it("Should reload data") {
-                    expect(sut.tableData).to(beNil())
+                    expect(viewModel.tableData).to(beNil())
                     expect(delegate.reloadedData).to(beTrue())
                 }
             }

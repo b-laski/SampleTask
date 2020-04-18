@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Swinject
 
 protocol DetailViewModelDelegate: ViewModelDelegate {
     func reloadChart()
@@ -15,7 +16,7 @@ protocol DetailViewModelDelegate: ViewModelDelegate {
 class DetailViewModel {
     
     // MARK: - Public variables -
-    let currencyService: CurrencyServiceProtocol = DIContainter.resolve()
+    var currencyService: CurrencyServiceProtocol = Assembler.detailViewModelAssembly
     var currencyDate: Table?
     
     weak var delegate: DetailViewModelDelegate?

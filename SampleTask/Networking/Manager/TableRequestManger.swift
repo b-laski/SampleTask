@@ -18,7 +18,11 @@ protocol TableRequestServiceProtocol: class {
 }
 
 class TableRequestService: TableRequestServiceProtocol {
-    let httpHandler: HTTPHandlerProtocol = DIContainter.resolve()
+    let httpHandler: HTTPHandlerProtocol
+    
+    init(httpHandler: HTTPHandlerProtocol = HttpHandler()) {
+        self.httpHandler = httpHandler
+    }
     
     func fetchTable(selectedTable: String, completion: @escaping (Result<[Table], TableRequestMangerError>) -> Void) {
         let request = TableRequest(selectedTable: selectedTable)

@@ -69,7 +69,7 @@ class DetailViewModelSpec: QuickSpec {
             beforeEach {
                 httpHandler = MockedHTTPHandler()
                 delegate = MockedDetailViewModelDelegate()
-                DIContainter.container.register { httpHandler as HTTPHandlerProtocol }
+                
                 sut = DetailViewModel(delegate: delegate)
             }
             

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Swinject
 
 protocol MainViewModelDelegate: ViewModelDelegate {
     func reloadData()
@@ -15,7 +16,7 @@ protocol MainViewModelDelegate: ViewModelDelegate {
 class MainViewModel {
     
     // MARK: - Public variables -
-    let tableRequestManager: TableRequestServiceProtocol = DIContainter.resolve()
+    var tableRequestManager: TableRequestServiceProtocol = Assembler.mainViewModelAssembly
     var tableData: Table?
     
     weak var delegate: MainViewModelDelegate?
