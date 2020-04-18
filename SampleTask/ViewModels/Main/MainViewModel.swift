@@ -16,7 +16,7 @@ protocol MainViewModelDelegate: ViewModelDelegate {
 class MainViewModel {
     
     // MARK: - Public variables -
-    var tableRequestManager: TableRequestServiceProtocol = Assembler.mainViewModelAssembly
+    var tableRequestManager: TableRequestServiceProtocol = Assembler.resolve()
     var tableData: Table?
     
     weak var delegate: MainViewModelDelegate?

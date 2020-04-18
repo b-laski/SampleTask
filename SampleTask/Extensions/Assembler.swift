@@ -9,7 +9,7 @@
 import Swinject
 
 extension Assembler {
-    private static let sharedAssembler: Assembler = {
+    private static let shared: Assembler = {
         let container = Container()
         let assembler = Assembler([
             MainViewModelAssembly(),
@@ -19,11 +19,7 @@ extension Assembler {
         return assembler
     }()
     
-    static var mainViewModelAssembly: TableRequestServiceProtocol {
-         return sharedAssembler.resolver.resolve(TableRequestServiceProtocol.self)!
-    }
-    
-    static var detailViewModelAssembly: CurrencyServiceProtocol {
-        return sharedAssembler.resolver.resolve(CurrencyServiceProtocol.self)!
+    static func resolve<T>() -> T {
+        return shared.resolver.resolve(T.self)!
     }
 }

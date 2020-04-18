@@ -16,7 +16,7 @@ protocol DetailViewModelDelegate: ViewModelDelegate {
 class DetailViewModel {
     
     // MARK: - Public variables -
-    var currencyService: CurrencyServiceProtocol = Assembler.detailViewModelAssembly
+    var currencyService: CurrencyServiceProtocol = Assembler.resolve()
     var currencyDate: Table?
     
     weak var delegate: DetailViewModelDelegate?

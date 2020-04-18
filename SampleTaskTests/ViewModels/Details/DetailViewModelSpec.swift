@@ -4,10 +4,11 @@
 //
 //  Created by Bartłomiej Łaski on 13/04/2020.
 //  Copyright © 2020 Bartłomiej Łaski. All rights reserved.
-//
+//  swiftlint:disable force_cast
 
 import Quick
 import Nimble
+import Swinject
 
 @testable
 import SampleTask
@@ -62,34 +63,51 @@ extension DetailViewModelSpec {
 class DetailViewModelSpec: QuickSpec {
     override func spec() {
         describe("DetailViewModelSpec") {
-            var sut: DetailViewModel!
-            var httpHandler: MockedHTTPHandler!
+            var container: Container!
+            
+            var viewModel: DetailViewModel!
             var delegate: MockedDetailViewModelDelegate!
+            var httpHandler: MockedHTTPHandler!
             
             beforeEach {
-                httpHandler = MockedHTTPHandler()
-                delegate = MockedDetailViewModelDelegate()
+                container = Container()
                 
-                sut = DetailViewModel(delegate: delegate)
+                container.register(HTTPHandlerProtocol.self) { _ in MockedHTTPHandler() }.inObjectScope(.container)
+                container.register(DetailViewModelDelegate.self) { _ in MockedDetailViewModelDelegate() }.inObjectScope(.container)
+                container.register(CurrencyServiceProtocol.self) { resolver in
+                    return CurrencyService(httpHandler: resolver.resolve(HTTPHandlerProtocol.self)!)
+                }
+                
+                container.register(DetailViewModel.self) { resolver in
+                    let service = resolver.resolve(CurrencyServiceProtocol.self)!
+                    let delegate = resolver.resolve(DetailViewModelDelegate.self)!
+                    let detailViewModel = DetailViewModel(delegate: delegate)
+                    detailViewModel.currencyService = service
+                    return detailViewModel
+                }
+                
+                httpHandler = (container.resolve(HTTPHandlerProtocol.self) as! MockedHTTPHandler)
+                delegate = (container.resolve(DetailViewModelDelegate.self) as! MockedDetailViewModelDelegate)
+                viewModel = (container.resolve(DetailViewModel.self))!
             }
             
             describe("Should call to reload data") {
                 beforeEach {
                     httpHandler.shouldReturnSuccess = true
-                    sut.fetchCurrencyData(tableType: "A", code: "USD", startDate: "2020-03-20", endDate: "2020-04-01")
+                    viewModel.fetchCurrencyData(tableType: "A", code: "USD", startDate: "2020-03-20", endDate: "2020-04-01")
                 }
-                
+
                 it("Should reload data") {
                     expect(delegate.chartDidReloaded).to(beTrue())
                 }
             }
-            
+
             describe("Should call to show message") {
                 beforeEach {
                     httpHandler.shouldReturnSuccess = false
-                    sut.fetchCurrencyData(tableType: "A", code: "USD", startDate: "2020-03-20", endDate: "2020-04-01")
+                    viewModel.fetchCurrencyData(tableType: "A", code: "USD", startDate: "2020-03-20", endDate: "2020-04-01")
                 }
-                
+
                 it("Should show message") {
                     expect(delegate.messageDidSent).to(beTrue())
                 }

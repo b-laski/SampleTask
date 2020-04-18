@@ -27,7 +27,7 @@ extension MainViewModelSpec {
         }
     }
     
-    class MockingHTTPHandler: HTTPHandlerProtocol {
+    class MockedHTTPHandler: HTTPHandlerProtocol {
         var shouldReturnSuccess = false
         func make<T: Codable>(request: HTTPHandlerRequestProtocol, completion: @escaping (Result<T, Error>) -> Void) {
             
@@ -64,12 +64,12 @@ class MainViewModelSpec: QuickSpec {
             
             var viewModel: MainViewModel!
             var delegate: MockingMainViewModelDelegate!
-            var httpHandler: MockingHTTPHandler!
+            var httpHandler: MockedHTTPHandler!
             
             beforeEach {
                 container = Container()
                 
-                container.register(HTTPHandlerProtocol.self) { _ in MockingHTTPHandler() }.inObjectScope(.container)
+                container.register(HTTPHandlerProtocol.self) { _ in MockedHTTPHandler() }.inObjectScope(.container)
                 container.register(MainViewModelDelegate.self) { _ in MockingMainViewModelDelegate() }.inObjectScope(.container)
                 container.register(TableRequestServiceProtocol.self) { resolver in
                     return TableRequestService(httpHandler: resolver.resolve(HTTPHandlerProtocol.self)!)
@@ -83,7 +83,7 @@ class MainViewModelSpec: QuickSpec {
                     return mainViewModel
                 }
                 
-                httpHandler = (container.resolve(HTTPHandlerProtocol.self) as! MockingHTTPHandler)
+                httpHandler = (container.resolve(HTTPHandlerProtocol.self) as! MockedHTTPHandler)
                 delegate = (container.resolve(MainViewModelDelegate.self) as! MockingMainViewModelDelegate)
                 viewModel = (container.resolve(MainViewModel.self))!
                 
