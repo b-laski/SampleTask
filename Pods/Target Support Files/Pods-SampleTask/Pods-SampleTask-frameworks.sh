@@ -198,11 +198,11 @@ fi
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Charts/Charts.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Dip/Dip.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Swinject/Swinject.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Charts/Charts.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Dip/Dip.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Swinject/Swinject.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

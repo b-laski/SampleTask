@@ -3,7 +3,7 @@ platform :ios, '13.0'
 target 'SampleTask' do
   use_frameworks!
   pod 'Charts'
-  pod "Dip"
+  pod 'Swinject'
   pod 'SwiftLint'
 
   target 'SampleTaskTests' do

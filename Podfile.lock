@@ -2,33 +2,33 @@ PODS:
   - Charts (3.4.0):
     - Charts/Core (= 3.4.0)
   - Charts/Core (3.4.0)
-  - Dip (7.1.1)
   - Nimble (8.0.7)
   - Quick (2.2.0)
   - SwiftLint (0.39.2)
+  - Swinject (2.7.1)
 
 DEPENDENCIES:
   - Charts
-  - Dip
   - Nimble
   - Quick
   - SwiftLint
+  - Swinject
 
 SPEC REPOS:
   https://cdn.cocoapods.org/:
     - Charts
-    - Dip
     - Nimble
     - Quick
     - SwiftLint
+    - Swinject
 
 SPEC CHECKSUMS:
   Charts: 74c9f256eaf0460c0c416522d1cf8c634ea6b286
-  Dip: 6bebb09d50f88633039ce2c9fe5bc56d387b492f
   Nimble: a73af6ecd4c9106f434f3d55fc54570be3739e0b
   Quick: 7fb19e13be07b5dfb3b90d4f9824c855a11af40e
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
+  Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
 
-PODFILE CHECKSUM: 742c9f8da3cbb3dc6ad2eea68fcd7308f8c23b28
+PODFILE CHECKSUM: 976bd929c6cb085435bedfe844c7945a6112b0f9
 
 COCOAPODS: 1.9.1

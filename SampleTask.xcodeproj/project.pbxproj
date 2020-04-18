@@ -18,8 +18,10 @@
 		1D65ABAA244109FD005B2729 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D65ABA9244109FD005B2729 /* MainViewController.swift */; };
 		1D65ABAF24410A02005B2729 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D65ABAE24410A02005B2729 /* Assets.xcassets */; };
 		1D65ABB224410A02005B2729 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D65ABB024410A02005B2729 /* LaunchScreen.storyboard */; };
-		1D7B34442444CDEE00A079F5 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B34432444CDEE00A079F5 /* DIContainer.swift */; };
+		1D7B34442444CDEE00A079F5 /* MainViewModelAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B34432444CDEE00A079F5 /* MainViewModelAssembly.swift */; };
 		1D7B34482444DB3A00A079F5 /* DetailViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B34472444DB3A00A079F5 /* DetailViewModelSpec.swift */; };
+		1D88D5D7244B40A500BF0FA4 /* Assembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D88D5D6244B40A500BF0FA4 /* Assembler.swift */; };
+		1D88D5D9244B41CF00BF0FA4 /* DetailViewModelAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D88D5D8244B41CF00BF0FA4 /* DetailViewModelAssembly.swift */; };
 		1D92CF7524410F86006BFD3F /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92CF7424410F86006BFD3F /* Table.swift */; };
 		1D92CF7724411069006BFD3F /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92CF7624411069006BFD3F /* Currency.swift */; };
 		1D92CF7C244111B4006BFD3F /* HTTPHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92CF7B244111B4006BFD3F /* HTTPHandler.swift */; };
@@ -74,8 +76,10 @@
 		1D65ABB324410A02005B2729 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D65ABB824410A03005B2729 /* SampleTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D65ABBE24410A03005B2729 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1D7B34432444CDEE00A079F5 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
+		1D7B34432444CDEE00A079F5 /* MainViewModelAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelAssembly.swift; sourceTree = "<group>"; };
 		1D7B34472444DB3A00A079F5 /* DetailViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModelSpec.swift; sourceTree = "<group>"; };
+		1D88D5D6244B40A500BF0FA4 /* Assembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembler.swift; sourceTree = "<group>"; };
+		1D88D5D8244B41CF00BF0FA4 /* DetailViewModelAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModelAssembly.swift; sourceTree = "<group>"; };
 		1D92CF7424410F86006BFD3F /* Table.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Table.swift; sourceTree = "<group>"; };
 		1D92CF7624411069006BFD3F /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		1D92CF7B244111B4006BFD3F /* HTTPHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPHandler.swift; sourceTree = "<group>"; };
@@ -238,7 +242,8 @@
 		1D7B34422444CD3700A079F5 /* DI */ = {
 			isa = PBXGroup;
 			children = (
-				1D7B34432444CDEE00A079F5 /* DIContainer.swift */,
+				1D88D5DA244B41E400BF0FA4 /* Details */,
+				1D88D5D5244B3C6700BF0FA4 /* Main */,
 			);
 			path = DI;
 			sourceTree = "<group>";
@@ -255,6 +260,22 @@
 			isa = PBXGroup;
 			children = (
 				1D7B34472444DB3A00A079F5 /* DetailViewModelSpec.swift */,
+			);
+			path = Details;
+			sourceTree = "<group>";
+		};
+		1D88D5D5244B3C6700BF0FA4 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				1D7B34432444CDEE00A079F5 /* MainViewModelAssembly.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		1D88D5DA244B41E400BF0FA4 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				1D88D5D8244B41CF00BF0FA4 /* DetailViewModelAssembly.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -364,6 +385,7 @@
 				1DA150792443A69400EC9304 /* String.swift */,
 				1D24B3072443C524003B7DC2 /* UIViewController.swift */,
 				1DE616CE2444A56D0010DB07 /* UILabel.swift */,
+				1D88D5D6244B40A500BF0FA4 /* Assembler.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -660,13 +682,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D92CF8924412647006BFD3F /* TableRequest.swift in Sources */,
-				1D7B34442444CDEE00A079F5 /* DIContainer.swift in Sources */,
+				1D7B34442444CDEE00A079F5 /* MainViewModelAssembly.swift in Sources */,
 				1DDD77612441CEE20052D46A /* MainView.swift in Sources */,
 				1DA778DB2443729B0036D9C7 /* DetailView.swift in Sources */,
 				1D92CF8224411757006BFD3F /* HTTPMethod.swift in Sources */,
+				1D88D5D9244B41CF00BF0FA4 /* DetailViewModelAssembly.swift in Sources */,
 				1D92CF8C24412795006BFD3F /* TableRequestManger.swift in Sources */,
 				1D24B3042443B539003B7DC2 /* FormInputView.swift in Sources */,
 				1D92CF7524410F86006BFD3F /* Table.swift in Sources */,
+				1D88D5D7244B40A500BF0FA4 /* Assembler.swift in Sources */,
 				1DA778E72443884C0036D9C7 /* QDateTextField.swift in Sources */,
 				1DA150782443A5B600EC9304 /* ChartXAxisFormatter.swift in Sources */,
 				1D92CF7724411069006BFD3F /* Currency.swift in Sources */,

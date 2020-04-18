@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Swinject
 
 enum CurrencyServiceError: LocalizedError {
     case badRequest
@@ -34,7 +35,11 @@ protocol CurrencyServiceProtocol: class {
 }
 
 class CurrencyService: CurrencyServiceProtocol {
-    let httpHandler: HTTPHandlerProtocol = DIContainter.resolve()
+    let httpHandler: HTTPHandlerProtocol
+    
+    init(httpHandler: HTTPHandlerProtocol = HttpHandler()) {
+        self.httpHandler = httpHandler
+    }
     
     func fetchCurrency(tableType: String,
                        code: String,
