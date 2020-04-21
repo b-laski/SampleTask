@@ -12,8 +12,8 @@ extension Assembler {
     private static let shared: Assembler = {
         let container = Container()
         let assembler = Assembler([
-            MainViewModelAssembly(),
-            DeatilViewModelAssembly()
+            MainAssembly(),
+            DeatilAssembly()
         ], container: container)
         
         return assembler

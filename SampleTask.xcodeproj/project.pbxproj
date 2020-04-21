@@ -18,10 +18,10 @@
 		1D65ABAA244109FD005B2729 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D65ABA9244109FD005B2729 /* MainViewController.swift */; };
 		1D65ABAF24410A02005B2729 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D65ABAE24410A02005B2729 /* Assets.xcassets */; };
 		1D65ABB224410A02005B2729 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D65ABB024410A02005B2729 /* LaunchScreen.storyboard */; };
-		1D7B34442444CDEE00A079F5 /* MainViewModelAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B34432444CDEE00A079F5 /* MainViewModelAssembly.swift */; };
+		1D7B34442444CDEE00A079F5 /* MainAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B34432444CDEE00A079F5 /* MainAssembly.swift */; };
 		1D7B34482444DB3A00A079F5 /* DetailViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B34472444DB3A00A079F5 /* DetailViewModelSpec.swift */; };
 		1D88D5D7244B40A500BF0FA4 /* Assembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D88D5D6244B40A500BF0FA4 /* Assembler.swift */; };
-		1D88D5D9244B41CF00BF0FA4 /* DetailViewModelAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D88D5D8244B41CF00BF0FA4 /* DetailViewModelAssembly.swift */; };
+		1D88D5D9244B41CF00BF0FA4 /* DeatilAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D88D5D8244B41CF00BF0FA4 /* DeatilAssembly.swift */; };
 		1D92CF7524410F86006BFD3F /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92CF7424410F86006BFD3F /* Table.swift */; };
 		1D92CF7724411069006BFD3F /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92CF7624411069006BFD3F /* Currency.swift */; };
 		1D92CF7C244111B4006BFD3F /* HTTPHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92CF7B244111B4006BFD3F /* HTTPHandler.swift */; };
@@ -76,10 +76,10 @@
 		1D65ABB324410A02005B2729 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D65ABB824410A03005B2729 /* SampleTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D65ABBE24410A03005B2729 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1D7B34432444CDEE00A079F5 /* MainViewModelAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelAssembly.swift; sourceTree = "<group>"; };
+		1D7B34432444CDEE00A079F5 /* MainAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAssembly.swift; sourceTree = "<group>"; };
 		1D7B34472444DB3A00A079F5 /* DetailViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModelSpec.swift; sourceTree = "<group>"; };
 		1D88D5D6244B40A500BF0FA4 /* Assembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembler.swift; sourceTree = "<group>"; };
-		1D88D5D8244B41CF00BF0FA4 /* DetailViewModelAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModelAssembly.swift; sourceTree = "<group>"; };
+		1D88D5D8244B41CF00BF0FA4 /* DeatilAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeatilAssembly.swift; sourceTree = "<group>"; };
 		1D92CF7424410F86006BFD3F /* Table.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Table.swift; sourceTree = "<group>"; };
 		1D92CF7624411069006BFD3F /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		1D92CF7B244111B4006BFD3F /* HTTPHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPHandler.swift; sourceTree = "<group>"; };
@@ -156,31 +156,6 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		1D4D7BAB244242790089AB69 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				1D4D7BAE2442435E0089AB69 /* Cells */,
-				1DDD77602441CEE20052D46A /* MainView.swift */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
-		1D4D7BAC244242850089AB69 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				1DDD775D2441CECD0052D46A /* MainViewModel.swift */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
-		1D4D7BAD244242AB0089AB69 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				1D65ABA9244109FD005B2729 /* MainViewController.swift */,
-			);
-			name = Main;
-			sourceTree = "<group>";
-		};
 		1D4D7BAE2442435E0089AB69 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -213,10 +188,8 @@
 			isa = PBXGroup;
 			children = (
 				1D7B34422444CD3700A079F5 /* DI */,
-				1DDD775C2441CEAE0052D46A /* ViewControllers */,
-				1DDD775B2441CEA50052D46A /* ViewModels */,
-				1DDD775A2441CE990052D46A /* Views */,
 				1D92CF7324410E36006BFD3F /* Models */,
+				1DC2E3AF244F61D500FA0302 /* Modules */,
 				1D92CF7824411129006BFD3F /* Networking */,
 				1DA150762443A5A300EC9304 /* Utils */,
 				1DA778E5244388200036D9C7 /* Controls */,
@@ -267,7 +240,7 @@
 		1D88D5D5244B3C6700BF0FA4 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				1D7B34432444CDEE00A079F5 /* MainViewModelAssembly.swift */,
+				1D7B34432444CDEE00A079F5 /* MainAssembly.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -275,7 +248,7 @@
 		1D88D5DA244B41E400BF0FA4 /* Details */ = {
 			isa = PBXGroup;
 			children = (
-				1D88D5D8244B41CF00BF0FA4 /* DetailViewModelAssembly.swift */,
+				1D88D5D8244B41CF00BF0FA4 /* DeatilAssembly.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -336,14 +309,6 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
-		1DA150732443932600EC9304 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				1DA150742443933900EC9304 /* DetailViewModel.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
 		1DA150762443A5A300EC9304 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -354,26 +319,12 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		1DA778DC2443729F0036D9C7 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				1DA778DA2443729B0036D9C7 /* DetailView.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
-		1DA778E224437E8F0036D9C7 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				1DA778E324437EC70036D9C7 /* DetailViewController.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
 		1DA778E5244388200036D9C7 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
-				1DA778E62443884C0036D9C7 /* QDateTextField.swift */,
+				1DC2E3B9244F628200FA0302 /* QDateTextField */,
+				1DB8BD6C24422D7D00011249 /* MenuBar */,
+				1DE616C62444A0DC0010DB07 /* FormInput */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -399,33 +350,90 @@
 			path = MenuBar;
 			sourceTree = "<group>";
 		};
-		1DDD775A2441CE990052D46A /* Views */ = {
+		1DC2E3AF244F61D500FA0302 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				1D4D7BAB244242790089AB69 /* Main */,
-				1DA778DC2443729F0036D9C7 /* Detail */,
-				1DB8BD6C24422D7D00011249 /* MenuBar */,
-				1DE616C62444A0DC0010DB07 /* FormInput */,
+				1DC2E3B4244F622B00FA0302 /* Main */,
+				1DC2E3B0244F61F500FA0302 /* Details */,
 			);
-			path = Views;
+			path = Modules;
 			sourceTree = "<group>";
 		};
-		1DDD775B2441CEA50052D46A /* ViewModels */ = {
+		1DC2E3B0244F61F500FA0302 /* Details */ = {
 			isa = PBXGroup;
 			children = (
-				1DA150732443932600EC9304 /* Detail */,
-				1D4D7BAC244242850089AB69 /* Main */,
+				1DC2E3B2244F620100FA0302 /* View */,
+				1DC2E3B3244F620700FA0302 /* ViewController */,
+				1DC2E3B1244F61FA00FA0302 /* ViewModel */,
 			);
-			path = ViewModels;
+			path = Details;
 			sourceTree = "<group>";
 		};
-		1DDD775C2441CEAE0052D46A /* ViewControllers */ = {
+		1DC2E3B1244F61FA00FA0302 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				1DA778E224437E8F0036D9C7 /* Detail */,
-				1D4D7BAD244242AB0089AB69 /* Main */,
+				1DA150742443933900EC9304 /* DetailViewModel.swift */,
 			);
-			path = ViewControllers;
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		1DC2E3B2244F620100FA0302 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1DA778DA2443729B0036D9C7 /* DetailView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1DC2E3B3244F620700FA0302 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1DA778E324437EC70036D9C7 /* DetailViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		1DC2E3B4244F622B00FA0302 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				1DC2E3B7244F623F00FA0302 /* View */,
+				1DC2E3B6244F623900FA0302 /* ViewController */,
+				1DC2E3B5244F623100FA0302 /* ViewModel */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		1DC2E3B5244F623100FA0302 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				1DDD775D2441CECD0052D46A /* MainViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		1DC2E3B6244F623900FA0302 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1D65ABA9244109FD005B2729 /* MainViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		1DC2E3B7244F623F00FA0302 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1D4D7BAE2442435E0089AB69 /* Cells */,
+				1DDD77602441CEE20052D46A /* MainView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1DC2E3B9244F628200FA0302 /* QDateTextField */ = {
+			isa = PBXGroup;
+			children = (
+				1DA778E62443884C0036D9C7 /* QDateTextField.swift */,
+			);
+			path = QDateTextField;
 			sourceTree = "<group>";
 		};
 		1DE616C62444A0DC0010DB07 /* FormInput */ = {
@@ -682,11 +690,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D92CF8924412647006BFD3F /* TableRequest.swift in Sources */,
-				1D7B34442444CDEE00A079F5 /* MainViewModelAssembly.swift in Sources */,
+				1D7B34442444CDEE00A079F5 /* MainAssembly.swift in Sources */,
 				1DDD77612441CEE20052D46A /* MainView.swift in Sources */,
 				1DA778DB2443729B0036D9C7 /* DetailView.swift in Sources */,
 				1D92CF8224411757006BFD3F /* HTTPMethod.swift in Sources */,
-				1D88D5D9244B41CF00BF0FA4 /* DetailViewModelAssembly.swift in Sources */,
+				1D88D5D9244B41CF00BF0FA4 /* DeatilAssembly.swift in Sources */,
 				1D92CF8C24412795006BFD3F /* TableRequestManger.swift in Sources */,
 				1D24B3042443B539003B7DC2 /* FormInputView.swift in Sources */,
 				1D92CF7524410F86006BFD3F /* Table.swift in Sources */,

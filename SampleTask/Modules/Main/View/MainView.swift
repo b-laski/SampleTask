@@ -11,6 +11,8 @@ import UIKit
 class MainView: UIView {
     
     // MARK: - Components -
+    let refresher = UIRefreshControl()
+    
     let menuBarView: MenuBarView = {
         let flow = UICollectionViewFlowLayout()
         flow.scrollDirection = .horizontal
@@ -26,10 +28,6 @@ class MainView: UIView {
         collectionView.backgroundColor = .systemBackground
         return collectionView
     }()
-    
-    private var segmentItems = [MenuBarViewItemAttribute(color: .systemBackground, text: "A"),
-                                MenuBarViewItemAttribute(color: .systemBackground, text: "B"),
-                                MenuBarViewItemAttribute(color: .systemBackground, text: "C")]
     
     // MARK: - Inits -
     override init(frame: CGRect) {
@@ -48,8 +46,8 @@ class MainView: UIView {
         addSubview(collectionView)
         
         backgroundColor = .systemBackground
+        collectionView.refreshControl = refresher
         
-        menuBarView.setItems(items: segmentItems)
         menuBarView.translatesAutoresizingMaskIntoConstraints = false
         let menuBarConstraints = [menuBarView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
                                   menuBarView.leadingAnchor.constraint(equalTo: leadingAnchor),

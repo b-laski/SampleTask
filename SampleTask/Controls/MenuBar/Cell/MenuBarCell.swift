@@ -35,6 +35,13 @@ class MenuBarCell: UICollectionViewCell {
         }
     }
     
+    var attribute: MenuBarViewItemAttribute? {
+        didSet {
+            textLabel.text = attribute?.text
+            backgroundColor = attribute?.color
+        }
+    }
+    
     // MARK: - Inits -
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -1,5 +1,5 @@
 //
-//  DetailViewModelAssembly.swift
+//  DeatilAssembly.swift
 //  SampleTask
 //
 //  Created by Bartłomiej Łaski on 18/04/2020.
@@ -8,7 +8,7 @@
 
 import Swinject
 
-class DeatilViewModelAssembly: Assembly {
+class DeatilAssembly: Assembly {
     func assemble(container: Container) {
         container.register(HTTPHandlerProtocol.self) { _ in HttpHandler() }
         
