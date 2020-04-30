@@ -8,17 +8,15 @@
 
 import UIKit
 import Charts
+import RxSwift
+import RxCocoa
 
 class DetailViewController: UIViewController {
     
     // MARK: - Private variables-
+    private let disposeBag = DisposeBag()
     private let detailView = DetailView()
-    private lazy var detailViewModel = DetailViewModel(delegate: self)
-    private let tableType: String
-    private let currency: Currency
-    
-    private var startDate: String = ""
-    private var endDate: String = ""
+    private let viewModel: DetailViewModel
     
     // MARK: - Inits -
     override func loadView() {
@@ -26,28 +24,18 @@ class DetailViewController: UIViewController {
     }
     
     init(tableType: String, currency: Currency) {
-        self.tableType = tableType
-        self.currency = currency
-        
+        viewModel = DetailViewModel(tableType: tableType, currency: currency)
         super.init(nibName: nil, bundle: nil)
         
-        [detailView.startDateInputForm.dateTextField,
-         detailView.endDateInputForm.dateTextField].forEach({
-            $0.qDelegate = self
-         })
+        title = currency.currency
+        setupBinding()
+        viewModel.fetchCurrencyData()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshButtonTapped(_:)))
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        title = currency.currency
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshButtonTapped(_:)))
-        
-        refreshData()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -55,9 +43,45 @@ class DetailViewController: UIViewController {
     }
     
     // MARK: - Private methods -
-    private func setDataToChart() {
+    private func setupBinding() {
+        detailView.startDateInputForm.dateTextField.rx.text.orEmpty
+            .bind(to: viewModel.startDate)
+            .disposed(by: disposeBag)
+        
+        detailView.endDateInputForm.dateTextField.rx.text.orEmpty
+            .bind(to: viewModel.endDate)
+            .disposed(by: disposeBag)
+        
+        viewModel.didLoadData
+            .subscribe (onNext: { data in
+                self.setDataToChart(form: data)
+            }
+        ).disposed(by: disposeBag)
+        
+        viewModel.didFailLoadData
+            .subscribe (onNext: { error in
+                self.showMessage(title: "Error", body: error.localizedDescription)
+            }
+        ).disposed(by: disposeBag)
+        
+        detailView.startDateInputForm.dateTextField.rx
+            .controlEvent(.editingDidEnd)
+            .asObservable()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.fetchCurrencyData()
+            }).disposed(by: disposeBag)
+        
+        detailView.endDateInputForm.dateTextField.rx
+            .controlEvent(.editingDidEnd)
+            .asObservable()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.fetchCurrencyData()
+            }).disposed(by: disposeBag)
+    }
+    
+    private func setDataToChart(form data: Table) {
         var referenceTimeInterval: TimeInterval = 0
-        if let minTimeInterval = detailViewModel.currencyDate?.rates.compactMap({ $0.effectiveDate?.toDate()?.timeIntervalSince1970}).min() {
+        if let minTimeInterval = data.rates.compactMap({ $0.effectiveDate?.toDate()?.timeIntervalSince1970}).min() {
             referenceTimeInterval = minTimeInterval
         }
 
@@ -66,7 +90,7 @@ class DetailViewController: UIViewController {
         let xAxis = detailView.chartView.xAxis
         xAxis.valueFormatter = xValuesNumberFormatter
 
-        let yVal = detailViewModel.currencyDate?.rates.map({ item -> ChartDataEntry in
+        let yVal = data.rates.map({ item -> ChartDataEntry in
             var xValue = 0.0
             if let timeInterval = item.effectiveDate?.toDate()?.timeIntervalSince1970 {
                 xValue = (timeInterval - referenceTimeInterval) / (3600 * 24)
@@ -88,41 +112,7 @@ class DetailViewController: UIViewController {
         detailView.chartView.animate(xAxisDuration: 0.2)
     }
     
-    private func refreshData() {
-        guard let code = currency.code else { return }
-        
-        showSpinner(onView: detailView)
-        
-        startDate = detailView.startDateInputForm.dateTextField.text ?? ""
-        endDate = detailView.endDateInputForm.dateTextField.text ?? ""
-        detailViewModel.fetchCurrencyData(tableType: tableType, code: code, startDate: startDate, endDate: endDate)
-    }
-    
-    // MARK: - Actions -
-    @objc private func refreshButtonTapped(_ sender: UIBarButtonItem) {
-        refreshData()
-    }
-    
-}
-
-// MARK: - Extension QDateTextFieldDelegate -
-extension DetailViewController: QDateTextFieldDelegate {
-    
-    func valueChanged(_ sender: UITextField) {
-        if sender.tag == 0 {
-            startDate = sender.text ?? ""
-        } else {
-            endDate = sender.text ?? ""
-        }
-        
-        refreshData()
-    }
-}
-
-// MARK: - Extension DetailViewModelDelegate -
-extension DetailViewController: DetailViewModelDelegate {
-    func reloadChart() {
-        setDataToChart()
-        removeSpinner()
+    @objc private func refreshButtonTapped(_: Any) {
+        viewModel.fetchCurrencyData()
     }
 }

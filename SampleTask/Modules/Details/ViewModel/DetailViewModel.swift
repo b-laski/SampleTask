@@ -8,37 +8,43 @@
 
 import Foundation
 import Swinject
-
-protocol DetailViewModelDelegate: ViewModelDelegate {
-    func reloadChart()
-}
+import RxSwift
+import RxCocoa
 
 class DetailViewModel {
     
-    // MARK: - Public variables -
-    var currencyService: CurrencyServiceProtocol = Assembler.resolve()
-    var currencyDate: Table?
+    // MARK: - Private variables -
+    private let currencyService: CurrencyServiceProtocol = Assembler.resolve()
+    private let tableType: String
+    private let currency: Currency
     
-    weak var delegate: DetailViewModelDelegate?
+    // MARK: - Public variables -
+    let startDate: BehaviorRelay = BehaviorRelay(value: "")
+    let endDate: BehaviorRelay = BehaviorRelay(value: "")
+    
+    let didLoadData: PublishSubject<Table> = PublishSubject()
+    let didFailLoadData: PublishSubject<Error> = PublishSubject()
     
     // MARK: - Inits -
-    init(delegate: DetailViewModelDelegate? = nil) {
-        self.delegate = delegate
+    init(tableType: String, currency: Currency) {
+        self.tableType = tableType
+        self.currency = currency
     }
     
     // MARK: - Public methods -
-    func fetchCurrencyData(tableType: String, code: String, startDate: String, endDate: String) {
+    func fetchCurrencyData() {
+        guard let code = currency.code else { return }
+        
         currencyService.fetchCurrency(tableType: tableType,
                                       code: code,
-                                      startDate: startDate,
-                                      endDate: endDate) { [weak self] (result: Result<Table, CurrencyServiceError>) in
+                                      startDate: startDate.value,
+                                      endDate: endDate.value) { [weak self] (result: Result<Table, CurrencyServiceError>) in
             guard let strongSelf = self else { return }
             switch result {
             case .failure(let error):
-                strongSelf.delegate?.showMessage(title: "Error", body: error.localizedDescription)
+                strongSelf.didFailLoadData.onNext(error)
             case .success(let data):
-                strongSelf.currencyDate = data
-                strongSelf.delegate?.reloadChart()
+                strongSelf.didLoadData.onNext(data)
             }
         }
     }
