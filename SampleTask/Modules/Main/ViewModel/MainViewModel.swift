@@ -17,14 +17,14 @@ class MainViewModel {
     var tableRequestManager: TableRequestServiceProtocol = Assembler.resolve()
     var table: Table?
     var currencies: PublishSubject<[Currency]>
-    var segments: BehaviorSubject<[MenuBarViewItemAttribute]>
+    var segments: BehaviorRelay<[MenuBarViewItemAttribute]>
     
     // MARK: - Inits -
     init() {
         self.currencies = PublishSubject()
-        self.segments = BehaviorSubject(value: [MenuBarViewItemAttribute(color: .systemBackground, text: "A"),
-                                                MenuBarViewItemAttribute(color: .systemBackground, text: "B"),
-                                                MenuBarViewItemAttribute(color: .systemBackground, text: "C")])
+        self.segments = BehaviorRelay(value: [MenuBarViewItemAttribute(color: .systemBackground, text: "A"),
+                                              MenuBarViewItemAttribute(color: .systemBackground, text: "B"),
+                                              MenuBarViewItemAttribute(color: .systemBackground, text: "C")])
     }
     
     // MARK: - Public methods -
@@ -39,9 +39,5 @@ class MainViewModel {
                 strongSelf.currencies.onNext(value.rates)
             }
         }
-    }
-    
-    func clearTableData() {
-        currencies.onNext([])
     }
 }

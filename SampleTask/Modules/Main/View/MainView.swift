@@ -47,13 +47,14 @@ class MainView: UIView {
         
         backgroundColor = .systemBackground
         collectionView.refreshControl = refresher
+        collectionView.delegate = self
         
         menuBarView.translatesAutoresizingMaskIntoConstraints = false
         let menuBarConstraints = [menuBarView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
                                   menuBarView.leadingAnchor.constraint(equalTo: leadingAnchor),
                                   menuBarView.trailingAnchor.constraint(equalTo: trailingAnchor),
                                   menuBarView.bottomAnchor.constraint(equalTo: collectionView.topAnchor),
-                                  menuBarView.heightAnchor.constraint(equalToConstant: Constraint.menuBarHeight)]
+                                  menuBarView.heightAnchor.constraint(lessThanOrEqualToConstant: Constraint.menuBarHeight)]
         
         NSLayoutConstraint.activate(menuBarConstraints)
     
@@ -67,8 +68,15 @@ class MainView: UIView {
     }
 }
 
+extension MainView: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: frame.width, height: Constraint.currencyCellHeight)
+    }
+}
+
 private extension MainView {
     struct Constraint {
         static let menuBarHeight: CGFloat = 50
+        static let currencyCellHeight: CGFloat = 100
     }
 }

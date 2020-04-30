@@ -8,6 +8,11 @@
 
 import UIKit
 
+struct MenuBarViewItemAttribute {
+    var color: UIColor
+    var text: String
+}
+
 class MenuBarCell: UICollectionViewCell {
     
     // MARK: - Components -

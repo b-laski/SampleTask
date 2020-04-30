@@ -8,22 +8,11 @@
 
 import UIKit
 
-protocol MenuBarDelegate: class {
-    func cellDidSelect(tabelName: String)
-}
-
-struct MenuBarViewItemAttribute {
-    var color: UIColor
-    var text: String
-}
-
 class MenuBarView: UICollectionView {
     
     // MARK: - Public variables -
     var selectedItem: MenuBarViewItemAttribute?
     var firstElemenetShouldBeSelected: Bool = false
-    
-    weak var menuBarDelegate: MenuBarDelegate?
     
     // MARK: - Inits -
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
@@ -37,8 +26,6 @@ class MenuBarView: UICollectionView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Public methods -
     
 }
 
