@@ -9,25 +9,13 @@
 import Quick
 import Nimble
 import Swinject
+import RxTest
+import RxSwift
 
 @testable
 import SampleTask
 
 extension DetailViewModelSpec {
-    
-    class MockedDetailViewModelDelegate: DetailViewModelDelegate {
-        var chartDidReloaded = false
-        func reloadChart() {
-            chartDidReloaded = true
-        }
-        
-        var messageDidSent = false
-        func showMessage(title: String, body: String) {
-            messageDidSent = true
-        }
-        
-    }
-    
     class MockedHTTPHandler: HTTPHandlerProtocol {
         var shouldReturnSuccess = false
         
@@ -66,46 +54,58 @@ class DetailViewModelSpec: QuickSpec {
             var container: Container!
             
             var viewModel: DetailViewModel!
-            var delegate: MockedDetailViewModelDelegate!
             var httpHandler: MockedHTTPHandler!
+            var disposeBag = DisposeBag()
+            let scheduler = TestScheduler(initialClock: 0)
             
             beforeEach {
                 container = Container()
                 
                 container.register(HTTPHandlerProtocol.self) { _ in MockedHTTPHandler() }.inObjectScope(.container)
-                container.register(DetailViewModelDelegate.self) { _ in MockedDetailViewModelDelegate() }.inObjectScope(.container)
                 container.register(CurrencyServiceProtocol.self) { resolver in
                     return CurrencyService(httpHandler: resolver.resolve(HTTPHandlerProtocol.self)!)
                 }
                 
                 container.register(DetailViewModel.self) { resolver in
                     let service = resolver.resolve(CurrencyServiceProtocol.self)!
-                    let delegate = resolver.resolve(DetailViewModelDelegate.self)!
-                    let detailViewModel = DetailViewModel(delegate: delegate)
+                    let detailViewModel = DetailViewModel(tableType: "A", currency: Currency(currency: "",
+                                                                                             code: "", no: "",
+                                                                                             effectiveDate: "",
+                                                                                             bid: 20.0,
+                                                                                             ask: 20.0,
+                                                                                             mid: 20.0))
                     detailViewModel.currencyService = service
                     return detailViewModel
                 }
                 
                 httpHandler = (container.resolve(HTTPHandlerProtocol.self) as! MockedHTTPHandler)
-                delegate = (container.resolve(DetailViewModelDelegate.self) as! MockedDetailViewModelDelegate)
                 viewModel = (container.resolve(DetailViewModel.self))!
             }
             
             describe("Should call to reload data") {
                 beforeEach {
                     httpHandler.shouldReturnSuccess = true
-                    viewModel.fetchCurrencyData(tableType: "A", code: "USD", startDate: "2020-03-20", endDate: "2020-04-01")
+                    viewModel.fetchCurrencyData()
                 }
 
                 it("Should reload data") {
-                    expect(delegate.chartDidReloaded).to(beTrue())
+                    let date = scheduler.createObserver(Table.self)
+                    let error = scheduler.createObserver(Error.self)
+                    
+                    viewModel.didLoadData.subscribe(date).disposed(by: disposeBag)
+                    viewModel.didFailLoadData.subscribe(error).disposed(by: disposeBag)
+                    
+                    scheduler.createColdObservable([.next(10, ())]).bind(to: )
+                    scheduler.start()
+                    
+                    expect()
                 }
             }
 
             describe("Should call to show message") {
                 beforeEach {
                     httpHandler.shouldReturnSuccess = false
-                    viewModel.fetchCurrencyData(tableType: "A", code: "USD", startDate: "2020-03-20", endDate: "2020-04-01")
+                    viewModel.fetchCurrencyData()
                 }
 
                 it("Should show message") {

@@ -14,11 +14,11 @@ import RxCocoa
 class DetailViewModel {
     
     // MARK: - Private variables -
-    private let currencyService: CurrencyServiceProtocol = Assembler.resolve()
     private let tableType: String
     private let currency: Currency
     
     // MARK: - Public variables -
+    var currencyService: CurrencyServiceProtocol = Assembler.resolve()
     let startDate: BehaviorRelay = BehaviorRelay(value: "")
     let endDate: BehaviorRelay = BehaviorRelay(value: "")
     

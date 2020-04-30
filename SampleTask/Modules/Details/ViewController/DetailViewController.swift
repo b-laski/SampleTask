@@ -96,7 +96,12 @@ class DetailViewController: UIViewController {
                 xValue = (timeInterval - referenceTimeInterval) / (3600 * 24)
             }
             
-            return ChartDataEntry(x: xValue, y: item.mid!)
+            if let mid = item.mid {
+                return ChartDataEntry(x: xValue, y: mid)
+            } else {
+                return ChartDataEntry(x: xValue, y: item.average()!)
+            }
+            
         })
         
         let dataSet = LineChartDataSet(entries: yVal)
