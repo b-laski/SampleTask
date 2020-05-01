@@ -45,8 +45,12 @@ class MainViewController: UIViewController {
     private func setupBinding() {
         _ = viewmModel.currencies
             .subscribe(
-                onNext: { [weak self] _ in self?.mainView.refresher.endRefreshing() },
-                onError: { [weak self] in self?.showMessage(title: "Error", body: $0.localizedDescription) }
+                onNext: { [weak self] _ in self?.mainView.refresher.endRefreshing() }
+            )
+        
+        _ = viewmModel.didFailLoadTable
+            .subscribe(
+                onNext: { [weak self] in self?.showMessage(title: "Error", body: $0.localizedDescription) }
             )
 
         _ = mainView.collectionView.rx.itemSelected
@@ -89,9 +93,9 @@ class MainViewController: UIViewController {
         viewmModel.currencies
             .bind(to: mainView.collectionView.rx
                     .items(cellIdentifier: MainCell.identifier, cellType: MainCell.self)) { [weak self] ( _, currency, cell) in
-                guard let strongSelf = self else { return }
-                cell.currency = currency
-                cell.effectiveDate = strongSelf.viewmModel.table?.effectiveDate
+                        guard let strongSelf = self else { return }
+                        cell.currency = currency
+                        cell.effectiveDate = strongSelf.viewmModel.table?.effectiveDate
             }.disposed(by: disposeBag)
     }
 

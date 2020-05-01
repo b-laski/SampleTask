@@ -31,7 +31,8 @@ class MenuBarView: UICollectionView {
 
 extension MenuBarView: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: frame.width / CGFloat(3), height: frame.height)
+        let items = collectionView.numberOfItems(inSection: 0)
+        return CGSize(width: frame.width / CGFloat(items), height: frame.height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

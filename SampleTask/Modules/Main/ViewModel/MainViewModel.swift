@@ -19,6 +19,8 @@ class MainViewModel {
     var currencies: PublishSubject<[Currency]>
     var segments: BehaviorRelay<[MenuBarViewItemAttribute]>
     
+    let didFailLoadTable: PublishSubject<TableRequestMangerError> = PublishSubject()
+    
     // MARK: - Inits -
     init() {
         self.currencies = PublishSubject()
@@ -33,7 +35,7 @@ class MainViewModel {
             guard let strongSelf = self else { return }
             switch result {
             case .failure(let error):
-                strongSelf.currencies.onError(error)
+                strongSelf.didFailLoadTable.onNext(error)
             case .success(let value):
                 strongSelf.table = value
                 strongSelf.currencies.onNext(value.rates)

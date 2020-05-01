@@ -11,6 +11,13 @@ import Foundation
 enum TableRequestMangerError: Error {
     case notFound
     case unexpectedError
+    
+    var localizedDescription: String {
+        switch self {
+        case .notFound: return "notFound"
+        case .unexpectedError: return "unexpectedError"
+        }
+    }
 }
 
 protocol TableRequestServiceProtocol: class {
@@ -37,8 +44,6 @@ class TableRequestService: TableRequestServiceProtocol {
                         completion(Result.failure(.unexpectedError))
                     }
                 }
-                
-                print(error.localizedDescription)
             case .success(let value):
                 guard let table = value.first else { completion(.failure(.notFound)); return }
                 completion(Result.success(table))
