@@ -7,6 +7,21 @@
 //
 
 import UIKit
+import RxDataSources
+
+struct MainData {
+    var header: String
+    var items: [Item]
+}
+
+extension MainData: SectionModelType {
+  typealias Item = Table
+
+   init(original: MainData, items: [Item]) {
+    self = original
+    self.items = items
+  }
+}
 
 class MainCell: UICollectionViewCell {
     
@@ -15,13 +30,36 @@ class MainCell: UICollectionViewCell {
     let dateLabel: UILabel = UILabel.light12
     let averagePriceLabel: UILabel = UILabel.regular18
     
+    // MARK: - Public variables -
     static var identifier: String {
         return String(describing: self)
+    }
+    
+    var currency: Currency? {
+        didSet {
+            currencyNameLabel.text = currency?.currency
+            
+            if let averagePrive = currency?.mid {
+                averagePriceLabel.text = averagePrive.description
+            } else if let averagePrive = currency?.average() {
+                averagePriceLabel.text = averagePrive.description
+            } else {
+                averagePriceLabel.text = "Średnia cena nieznana"
+            }
+            
+        }
+    }
+    
+    var effectiveDate: String? {
+        didSet {
+            dateLabel.text = effectiveDate
+        }
     }
     
     // MARK: - Inits -
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         doLayout()
     }
     

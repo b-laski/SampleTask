@@ -1,19 +1,20 @@
 //
-//  Assembler.swift
+//  DIHolder.swift
 //  SampleTask
 //
-//  Created by Bartłomiej Łaski on 18/04/2020.
+//  Created by Bartłomiej Łaski on 01/05/2020.
 //  Copyright © 2020 Bartłomiej Łaski. All rights reserved.
 //
 
+import Foundation
 import Swinject
 
-extension Assembler {
+final class DIHolder {
     private static let shared: Assembler = {
         let container = Container()
         let assembler = Assembler([
-            MainViewModelAssembly(),
-            DeatilViewModelAssembly()
+            MainAssembly(),
+            DeatilAssembly()
         ], container: container)
         
         return assembler

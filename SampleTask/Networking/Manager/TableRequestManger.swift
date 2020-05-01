@@ -11,10 +11,17 @@ import Foundation
 enum TableRequestMangerError: Error {
     case notFound
     case unexpectedError
+    
+    var localizedDescription: String {
+        switch self {
+        case .notFound: return "notFound"
+        case .unexpectedError: return "unexpectedError"
+        }
+    }
 }
 
 protocol TableRequestServiceProtocol: class {
-    func fetchTable(selectedTable: String, completion: @escaping (Result<[Table], TableRequestMangerError>) -> Void)
+    func fetchTable(selectedTable: String, completion: @escaping (Result<Table, TableRequestMangerError>) -> Void)
 }
 
 class TableRequestService: TableRequestServiceProtocol {
@@ -24,7 +31,7 @@ class TableRequestService: TableRequestServiceProtocol {
         self.httpHandler = httpHandler
     }
     
-    func fetchTable(selectedTable: String, completion: @escaping (Result<[Table], TableRequestMangerError>) -> Void) {
+    func fetchTable(selectedTable: String, completion: @escaping (Result<Table, TableRequestMangerError>) -> Void) {
         let request = TableRequest(selectedTable: selectedTable)
         httpHandler.make(request: request) { (result: Result<[Table], Error>) in
             switch result {
@@ -37,10 +44,9 @@ class TableRequestService: TableRequestServiceProtocol {
                         completion(Result.failure(.unexpectedError))
                     }
                 }
-                
-                print(error.localizedDescription)
             case .success(let value):
-                completion(Result.success(value))
+                guard let table = value.first else { completion(.failure(.notFound)); return }
+                completion(Result.success(table))
             }
         }
     }

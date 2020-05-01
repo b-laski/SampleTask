@@ -4,28 +4,17 @@
 //
 //  Created by Bartłomiej Łaski on 13/04/2020.
 //  Copyright © 2020 Bartłomiej Łaski. All rights reserved.
-//  swiftlint:disable force_cast function_body_length
+//  swiftlint:disable force_cast function_body_length superfluous_disable_command
 
 import Quick
 import Nimble
 import Swinject
+import RxSwift
 
 @testable
 import SampleTask
 
 extension MainViewModelSpec {
-    class MockedMainViewModelDelegate: MainViewModelDelegate {
-        
-        var reloadedData = false
-        func reloadData() {
-            reloadedData = true
-        }
-        
-        var messageSent = false
-        func showMessage(title: String, body: String) {
-            messageSent = true
-        }
-    }
     
     class MockedHTTPHandler: HTTPHandlerProtocol {
         var shouldReturnSuccess = false
@@ -63,76 +52,65 @@ class MainViewModelSpec: QuickSpec {
             var container: Container!
             
             var viewModel: MainViewModel!
-            var delegate: MockedMainViewModelDelegate!
             var httpHandler: MockedHTTPHandler!
+            
+            let bag = DisposeBag()
             
             beforeEach {
                 container = Container()
                 
                 container.register(HTTPHandlerProtocol.self) { _ in MockedHTTPHandler() }.inObjectScope(.container)
-                container.register(MainViewModelDelegate.self) { _ in MockedMainViewModelDelegate() }.inObjectScope(.container)
                 container.register(TableRequestServiceProtocol.self) { resolver in
                     return TableRequestService(httpHandler: resolver.resolve(HTTPHandlerProtocol.self)!)
                 }
                 
                 container.register(MainViewModel.self) { resolver in
                     let service = resolver.resolve(TableRequestServiceProtocol.self)!
-                    let delegate = resolver.resolve(MainViewModelDelegate.self)!
-                    let mainViewModel = MainViewModel(delegate: delegate)
-                    mainViewModel.tableRequestManager = service
-                    return mainViewModel
+                    let viewModel = MainViewModel()
+                    viewModel.tableRequestManager = service
+                    return viewModel
                 }
                 
                 httpHandler = (container.resolve(HTTPHandlerProtocol.self) as! MockedHTTPHandler)
-                delegate = (container.resolve(MainViewModelDelegate.self) as! MockedMainViewModelDelegate)
                 viewModel = (container.resolve(MainViewModel.self))!
                 
             }
             
             describe("Should reload data after load data from api.") {
+                var shouldReturnCurrencies = false
                 beforeEach {
                     httpHandler.shouldReturnSuccess = true
+                    
+                    viewModel.currencies
+                        .subscribe(onNext: { _ in
+                            shouldReturnCurrencies = true
+                        }
+                    ).disposed(by: bag)
+                    
                     viewModel.fetchSelectedTable(tableName: "A")
                 }
                 
                 it("Should reload data") {
-                    expect(delegate.reloadedData).to(beTrue())
+                    expect(shouldReturnCurrencies).to(beTrue())
                 }
             }
-//
-            describe("Should show message") {
+
+            describe("Gettin reponse with error") {
+                var shouldThrowError = false
                 beforeEach {
                     httpHandler.shouldReturnSuccess = false
+                    
+                    viewModel.didFailLoadTable.subscribe(
+                        onNext: { _ in
+                            shouldThrowError = true
+                        }
+                    ).disposed(by: bag)
+                    
                     viewModel.fetchSelectedTable(tableName: "A")
                 }
 
-                it("Should reload data") {
-                    expect(delegate.messageSent).to(beTrue())
-                }
-            }
-
-            describe("Should clear data and cast reloadData") {
-                beforeEach {
-
-                    delegate.reloadedData = false
-                    viewModel.tableData = Table(table: "A",
-                                          no: "NO/123/123",
-                                          tradingDate: "2020-03-20",
-                                          effectiveDate: "2020-03-20",
-                                          currency: "dolar amrykański",
-                                          code: "USD",
-                                          rates: [Currency(currency: "dolar amerykański",
-                                                           code: "USD", no: "NO/123/123",
-                                                           effectiveDate: "2020-03-20",
-                                                           bid: nil,
-                                                           ask: nil,
-                                                           mid: 3.987)])
-                    viewModel.clearTableData()
-                }
-
-                it("Should reload data") {
-                    expect(viewModel.tableData).to(beNil())
-                    expect(delegate.reloadedData).to(beTrue())
+                it("Should throw error") {
+                    expect(shouldThrowError).to(beTrue())
                 }
             }
         }

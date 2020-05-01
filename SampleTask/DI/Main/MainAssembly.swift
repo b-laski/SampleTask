@@ -1,5 +1,5 @@
 //
-//  MainViewModelAssembly.swift
+//  MainAssembly.swift
 //  SampleTask
 //
 //  Created by Bartłomiej Łaski on 13/04/2020.
@@ -8,7 +8,7 @@
 
 import Swinject
 
-class MainViewModelAssembly: Assembly {
+class MainAssembly: Assembly {
     func assemble(container: Container) {
         container.register(HTTPHandlerProtocol.self) { _ in HttpHandler() }
         

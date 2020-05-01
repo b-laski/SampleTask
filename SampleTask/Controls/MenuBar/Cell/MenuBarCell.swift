@@ -8,6 +8,11 @@
 
 import UIKit
 
+struct MenuBarViewItemAttribute {
+    var color: UIColor
+    var text: String
+}
+
 class MenuBarCell: UICollectionViewCell {
     
     // MARK: - Components -
@@ -32,6 +37,13 @@ class MenuBarCell: UICollectionViewCell {
     override var isSelected: Bool {
         willSet {
             underLineView.isHidden = newValue == true ? false : true
+        }
+    }
+    
+    var attribute: MenuBarViewItemAttribute? {
+        didSet {
+            textLabel.text = attribute?.text
+            backgroundColor = attribute?.color
         }
     }
     

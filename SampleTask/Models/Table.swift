@@ -15,5 +15,5 @@ struct Table: Codable {
     let effectiveDate: String?
     let currency: String?
     let code: String?
-    let rates: [Currency]
+    var rates: [Currency]
 }
