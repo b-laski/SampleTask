@@ -11,6 +11,7 @@ import Nimble
 import Swinject
 import RxTest
 import RxSwift
+import RxBlocking
 
 @testable
 import SampleTask
@@ -55,8 +56,7 @@ class DetailViewModelSpec: QuickSpec {
             
             var viewModel: DetailViewModel!
             var httpHandler: MockedHTTPHandler!
-            var disposeBag = DisposeBag()
-            let scheduler = TestScheduler(initialClock: 0)
+            let disposeBag = DisposeBag()
             
             beforeEach {
                 container = Container()
@@ -83,33 +83,46 @@ class DetailViewModelSpec: QuickSpec {
             }
             
             describe("Should call to reload data") {
+                var shouldBeReloadData = false
+                
                 beforeEach {
                     httpHandler.shouldReturnSuccess = true
+                    
+                    viewModel.didLoadData.subscribe(onNext: { _ in
+                        shouldBeReloadData = true
+                    }).disposed(by: disposeBag)
+                    
+                    viewModel.didFailLoadData.subscribe({ _ in
+                        shouldBeReloadData = false
+                    }).disposed(by: disposeBag)
+                    
                     viewModel.fetchCurrencyData()
                 }
 
                 it("Should reload data") {
-                    let date = scheduler.createObserver(Table.self)
-                    let error = scheduler.createObserver(Error.self)
-                    
-                    viewModel.didLoadData.subscribe(date).disposed(by: disposeBag)
-                    viewModel.didFailLoadData.subscribe(error).disposed(by: disposeBag)
-                    
-                    scheduler.createColdObservable([.next(10, ())]).bind(to: )
-                    scheduler.start()
-                    
-                    expect()
+                    expect(shouldBeReloadData).to(beTrue())
                 }
             }
 
             describe("Should call to show message") {
+                var shouldFailLoadData = false
+                
                 beforeEach {
                     httpHandler.shouldReturnSuccess = false
+                    
+                    viewModel.didLoadData.subscribe(onNext: { _ in
+                        shouldFailLoadData = false
+                    }).disposed(by: disposeBag)
+                    
+                    viewModel.didFailLoadData.subscribe({ _ in
+                        shouldFailLoadData = true
+                    }).disposed(by: disposeBag)
+
                     viewModel.fetchCurrencyData()
                 }
 
                 it("Should show message") {
-                    expect(delegate.messageDidSent).to(beTrue())
+                    expect(shouldFailLoadData).to(beTrue())
                 }
             }
         }

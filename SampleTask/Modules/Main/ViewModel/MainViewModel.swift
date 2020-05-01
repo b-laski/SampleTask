@@ -14,7 +14,7 @@ import RxCocoa
 class MainViewModel {
     
     // MARK: - Public variables -
-    var tableRequestManager: TableRequestServiceProtocol = Assembler.resolve()
+    var tableRequestManager: TableRequestServiceProtocol = DIHolder.resolve()
     var table: Table?
     var currencies: PublishSubject<[Currency]>
     var segments: BehaviorRelay<[MenuBarViewItemAttribute]>

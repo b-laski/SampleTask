@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Swinject
 import RxSwift
 import RxCocoa
 
@@ -18,7 +17,7 @@ class DetailViewModel {
     private let currency: Currency
     
     // MARK: - Public variables -
-    var currencyService: CurrencyServiceProtocol = Assembler.resolve()
+    var currencyService: CurrencyServiceProtocol = DIHolder.resolve()
     let startDate: BehaviorRelay = BehaviorRelay(value: "")
     let endDate: BehaviorRelay = BehaviorRelay(value: "")
     
