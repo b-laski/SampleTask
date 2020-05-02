@@ -15,22 +15,21 @@ class MainViewController: UIViewController {
 
     // MARK: - Private variables -
     private let mainView = MainView()
-    private lazy var viewmModel = MainViewModel()
     private let disposeBag = DisposeBag()
+    
+    // MARK: - Public variables -
+    var viewmModel: MainViewModel!
 
     // MARK: - Inits -
     override func loadView() {
         view = mainView
     }
 
-    init() {
-        super.init(nibName: nil, bundle: nil)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         setupView()
         setupBinding()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        setupSubscription()
     }
 
     // MARK: - Private methods -
@@ -41,39 +40,8 @@ class MainViewController: UIViewController {
         mainView.refresher.addTarget(self, action: #selector(refreshData), for: .valueChanged)
 
     }
-
+    
     private func setupBinding() {
-        _ = viewmModel.currencies
-            .subscribe(
-                onNext: { [weak self] _ in self?.mainView.refresher.endRefreshing() }
-            )
-        
-        _ = viewmModel.didFailLoadTable
-            .subscribe(
-                onNext: { [weak self] in self?.showMessage(title: "Error", body: $0.localizedDescription) }
-            )
-
-        _ = mainView.collectionView.rx.itemSelected
-            .subscribe(
-                onNext: { [weak self] indexPath in
-                    guard let strongSelf = self else { return }
-                    let cell = strongSelf.mainView.collectionView.cellForItem(at: indexPath) as? MainCell
-
-                    guard let tableType = strongSelf.viewmModel.table?.table, let currency = cell?.currency else { return }
-                    let detailViewController = DetailViewController(tableType: tableType, currency: currency)
-                    strongSelf.navigationController?.pushViewController(detailViewController, animated: true)
-                }
-            )
-        _ = mainView.menuBarView.rx.itemSelected
-            .subscribe(
-                onNext: { [weak self] indexPath in
-                    guard let strongSelf = self else { return }
-                    let selectedTable = strongSelf.viewmModel.segments.value[indexPath.item]
-                    strongSelf.mainView.menuBarView.selectedItem = selectedTable
-                    strongSelf.viewmModel.fetchSelectedTable(tableName: selectedTable.text)
-                }
-            )
-
         viewmModel.segments
             .bind(to: mainView.menuBarView.rx
                     .items(cellIdentifier: MenuBarCell.identifier, cellType: MenuBarCell.self)) { [weak self] index, attribute, cell in
@@ -95,8 +63,41 @@ class MainViewController: UIViewController {
                     .items(cellIdentifier: MainCell.identifier, cellType: MainCell.self)) { [weak self] ( _, currency, cell) in
                         guard let strongSelf = self else { return }
                         cell.currency = currency
-                        cell.effectiveDate = strongSelf.viewmModel.table?.effectiveDate
+                        cell.effectiveDate = strongSelf.viewmModel.table.value.effectiveDate
             }.disposed(by: disposeBag)
+    }
+    
+    private func setupSubscription() {
+        viewmModel.currencies
+            .subscribe(
+                onNext: { [weak self] _ in self?.mainView.refresher.endRefreshing() }
+            ).disposed(by: disposeBag)
+        
+        viewmModel.error
+            .subscribe(
+                onNext: { [weak self] in self?.showMessage(title: "Error", body: $0.localizedDescription) }
+            ).disposed(by: disposeBag)
+
+        mainView.collectionView.rx.itemSelected
+            .subscribe(
+                onNext: { [weak self] indexPath in
+                    guard let strongSelf = self else { return }
+                    let cell = strongSelf.mainView.collectionView.cellForItem(at: indexPath) as? MainCell
+                    if let currency = cell?.currency {
+                        strongSelf.viewmModel.showDetails.onNext(currency)
+                    }
+                }
+            ).disposed(by: disposeBag)
+        
+        mainView.menuBarView.rx.itemSelected
+            .subscribe(
+                onNext: { [weak self] indexPath in
+                    guard let strongSelf = self else { return }
+                    let selectedTable = strongSelf.viewmModel.segments.value[indexPath.item]
+                    strongSelf.mainView.menuBarView.selectedItem = selectedTable
+                    strongSelf.viewmModel.fetchSelectedTable(tableName: selectedTable.text)
+                }
+            ).disposed(by: disposeBag)
     }
 
     // MARK: - Actions -

@@ -53,30 +53,30 @@ class DetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.didLoadData
-            .subscribe (onNext: { data in
-                self.setDataToChart(form: data)
-            }
-        ).disposed(by: disposeBag)
+            .subscribe (onNext: { [weak self] data in self?.setDataToChart(form: data) },
+                        onDisposed: { print("didLoadData disposed") }
+            ).disposed(by: disposeBag)
         
         viewModel.didFailLoadData
-            .subscribe (onNext: { error in
-                self.showMessage(title: "Error", body: error.localizedDescription)
-            }
-        ).disposed(by: disposeBag)
+            .subscribe (onNext: { [weak self] error in self?.showMessage(title: "Error", body: error.localizedDescription) },
+                        onDisposed: { print("didFailLoadData disposed") }
+            ).disposed(by: disposeBag)
         
         detailView.startDateInputForm.dateTextField.rx
             .controlEvent(.editingDidEnd)
             .asObservable()
-            .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.fetchCurrencyData()
-            }).disposed(by: disposeBag)
+            .subscribe(
+                onNext: { [weak self] _ in self?.viewModel.fetchCurrencyData() },
+                onDisposed: { print("startDateInputForm disposed") }
+            ).disposed(by: disposeBag)
         
         detailView.endDateInputForm.dateTextField.rx
             .controlEvent(.editingDidEnd)
             .asObservable()
-            .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.fetchCurrencyData()
-            }).disposed(by: disposeBag)
+            .subscribe(
+                onNext: { [weak self] _ in self?.viewModel.fetchCurrencyData() },
+                onDisposed: { print("endDateInputForm disposed") }
+            ).disposed(by: disposeBag)
     }
     
     private func setDataToChart(form data: Table) {

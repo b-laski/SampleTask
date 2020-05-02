@@ -16,4 +16,14 @@ struct Table: Codable {
     let currency: String?
     let code: String?
     var rates: [Currency]
+    
+    init() {
+        table = ""
+        no = ""
+        tradingDate = ""
+        effectiveDate = ""
+        currency = ""
+        code = ""
+        rates = []
+    }
 }
